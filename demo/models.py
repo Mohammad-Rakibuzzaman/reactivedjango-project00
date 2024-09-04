@@ -28,4 +28,7 @@ class Book(models.Model):
     # cover = models.FileField(upload_to='covers')
     cover = models.ImageField(upload_to='covers', blank=True)
 
+    def __str__(self):
+        return self.title
+
 
