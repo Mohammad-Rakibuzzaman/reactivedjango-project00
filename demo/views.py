@@ -5,11 +5,12 @@
 # from django.shortcuts import render
 
 from rest_framework import viewsets
-from .serializers import BookSerializer
+from .serializers import BookSerializer, BookminiSerializer
 from .models import Book
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 # class Another(View):
 #
@@ -37,7 +38,13 @@ from rest_framework.permissions import IsAuthenticated
 
 #so we are creating a builtin view for our books that will use all power of django and create option like HTTP methods for us
 class BookViewSet(viewsets.ModelViewSet):
-    serializer_class = BookSerializer
+    # serializer_class = BookSerializer
+    serializer_class = BookminiSerializer
     queryset = Book.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = BookSerializer(instance)
+        return Response(serializer.data)
