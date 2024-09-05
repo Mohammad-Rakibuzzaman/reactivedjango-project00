@@ -1,6 +1,14 @@
 from django.db import models
 
 # Create your models here.
+
+
+#something extra information related to that particular book
+class BookNumber(models.Model):
+    isbn_10 = models.CharField(max_length=10, blank=True)
+    isbn_13 = models.CharField(max_length=13, blank=True)
+
+
 class Book(models.Model):
 
     # STATUSES = (
@@ -28,7 +36,16 @@ class Book(models.Model):
     # cover = models.FileField(upload_to='covers')
     cover = models.ImageField(upload_to='covers', blank=True)
 
+    # To integrate our new field
+
+    number = models.OneToOneField(BookNumber, null=True,
+                                  blank=True, on_delete=models.CASCADE)
+
+
+
     def __str__(self):
         return self.title
+
+
 
 
